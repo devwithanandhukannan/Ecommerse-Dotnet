@@ -2,7 +2,7 @@ using EcommerceApp.Application.Common.Interfaces;
 using EcommerceApp.Domain.Entites;
 using MediatR;
 
-namespace EcommerceApp.Application.Product.Command;
+namespace EcommerceApp.Application.Products.Command;
 
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>{
     

@@ -1,6 +1,6 @@
 using System.Text;
 using EcommerceApp.Application.Common.Interfaces;
-using EcommerceApp.Application.Product.Command;
+using EcommerceApp.Application.Products.Command;
 using EcommerceApp.Infrastructure.Persistence;
 using EcommerceApp.Infrastructure.Services;
 using FluentValidation;

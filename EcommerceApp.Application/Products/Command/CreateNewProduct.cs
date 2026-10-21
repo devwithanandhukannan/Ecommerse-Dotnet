@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace EcommerceApp.Application.Product.Command;
+namespace EcommerceApp.Application.Products.Command;
 
 public record CreateProductCommand(
     string Name,

@@ -1,4 +1,4 @@
-using EcommerceApp.Application.Product.Command;
+using EcommerceApp.Application.Products.Command;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
