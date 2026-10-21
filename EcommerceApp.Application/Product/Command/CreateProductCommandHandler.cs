@@ -18,9 +18,9 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             Description = request.Description,
             Price = request.Price,
             Quantity = request.Quantity
-        }
+        };
         _context.Products.Add(product); //only just mark is need to add to the database, it will not be added until we call SaveChangesAsync
         await _context.SaveChangesAsync(cancellationToken);
-        return product.id;
+        return product.Id;
     }
 }
