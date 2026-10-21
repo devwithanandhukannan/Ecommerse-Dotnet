@@ -27,8 +27,9 @@ public class JwtService : IJwtService{
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), // This claim represents the subject of the JWT, which is the user's unique identifier. It is used to identify the user associated with the token.
             new Claim(JwtRegisteredClaimNames.Email, user.Email), // This claim represents the user's email address. It can be used for identification and communication purposes.
+            new Claim(ClaimTypes.Role, user.Role.ToString()), // This claim represents the user's role (e.g. Admin, Customer).
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // This claim represents a unique identifier for the JWT itself. It is used to prevent replay attacks by ensuring that each token is unique.
-        }
+        };
 
         var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"], // This line sets the issuer of the JWT, which is the entity that created and issued the token. It is retrieved from the configuration settings.

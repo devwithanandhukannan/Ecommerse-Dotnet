@@ -1,4 +1,4 @@
-using EcommerceApp.Entities;
+using EcommerceApp.Domain.Entites;
 
 namespace EcommerceApp.Application.Common.Interfaces;
 

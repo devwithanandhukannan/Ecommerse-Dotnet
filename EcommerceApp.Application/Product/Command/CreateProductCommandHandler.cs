@@ -1,5 +1,5 @@
-using EcommerseApp.Application.Common.Interfaces;
-using EcommerseApp.Domain.Entites;
+using EcommerceApp.Application.Common.Interfaces;
+using EcommerceApp.Domain.Entites;
 using MediatR;
 
 namespace EcommerceApp.Application.Product.Command;
@@ -13,7 +13,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
     }
 
     public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken){
-        var product = new Product{
+        var product = new EcommerceApp.Domain.Entites.Product{
             Name = request.Name,
             Description = request.Description,
             Price = request.Price,

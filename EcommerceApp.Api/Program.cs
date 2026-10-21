@@ -1,20 +1,19 @@
-using System.Text; // This namespace provides classes for encoding and decoding text, which is useful for handling JWT tokens and other string manipulations.
-using ECommerce.Application.Common.Interfaces; // This namespace contains the IJwtService interface, which defines the contract for generating JWT tokens. It is used to inject the JWT service into the application for token generation and validation.
-using ECommerce.Application.Products.Commands; // This namespace contains the CreateProductCommand and its handler, which are responsible for handling product creation requests in the application.
-using ECommerce.Infrastructure.Persistence; // This namespace contains the ApplicationDbContext class, which is responsible for interacting with the database using Entity Framework Core. It provides access to the database sets and handles data persistence.
-using ECommerce.Infrastructure.Services; // This namespace contains the JwtService class, which implements the IJwtService interface. It is responsible for generating JWT tokens based on user information and configuration settings.
-using FluentValidation; // This namespace provides classes and methods for validating objects and their properties. It is used to ensure that the data being processed meets certain criteria before it is persisted or used in the application.
-using Microsoft.AspNetCore.Authentication.JwtBearer; // This namespace provides classes for implementing JWT bearer authentication in ASP.NET Core applications. It allows the application to authenticate users based on JWT tokens included in the request headers.
-using Microsoft.EntityFrameworkCore; // This namespace provides classes for working with Entity Framework Core, which is an object-relational mapper (ORM) that enables .NET developers to work with a database using .NET objects. It simplifies data access and manipulation in the application.
-using Microsoft.IdentityModel.Tokens; // This namespace provides classes for working with security tokens, including JWT tokens. It includes classes for token validation, signing credentials, and cryptographic operations related to token security.
-using Microsoft.OpenApi.Models; // This namespace provides classes for working with OpenAPI (Swagger) specifications. It allows the application to generate API documentation and provide a user interface for testing API endpoints.
+using System.Text;
+using EcommerceApp.Application.Common.Interfaces;
+using EcommerceApp.Application.Product.Command;
+using EcommerceApp.Infrastructure.Persistence;
+using EcommerceApp.Infrastructure.Services;
+using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
+var builder = WebApplication.CreateBuilder(args);
 
-
-var builder = WebApplication.CreateBuilder(args); // WebApplication = ASP.NET core class that provides a simple way to configure and run a web application. It sets up the application's services, middleware, and request handling pipeline. The CreateBuilder method initializes the application with default settings and configurations, such as logging, configuration sources, and dependency injection.
-
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); // This line adds the ApplicationDbContext to the dependency injection container and configures it to use SQL Server as the database provider. It retrieves the connection string named "DefaultConnection" from the application's configuration settings (e.g., appsettings.json) to establish a connection to the database.
+    options.UseMySQL(connectionString!));
 
 builder.Services.AddScoped<IApplicationDbContext>(provider =>
     provider.GetRequiredService<ApplicationDbContext>()); // provider =retrieve an instance of ApplicationDbContext from the dependency injection container and register it as an implementation of the IApplicationDbContext interface. This enables other parts of the application to depend on the IApplicationDbContext interface rather than the concrete ApplicationDbContext class, promoting loose coupling and easier testing.
@@ -72,7 +71,7 @@ builder.Services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
-})
+});
 
 var app = builder.Build(); // This line builds the WebApplication instance using the configured services and middleware. It prepares the application to handle incoming HTTP requests and generate responses based on the defined routes, controllers, and middleware components.
 

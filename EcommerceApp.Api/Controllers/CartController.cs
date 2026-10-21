@@ -1,12 +1,11 @@
 using System.Security.Claims;
-using ECommerce.Application.Common.Interfaces;
-using ECommerce.Domain.Entities;
+using EcommerceApp.Application.Common.Interfaces;
+using EcommerceApp.Domain.Entites;
 using Microsoft.AspNetCore.Mvc; 
-using Microsoft.Aspcore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
-
-namespace ECommerce.Api.Controllers;
+namespace EcommerceApp.Api.Controllers;
 
 public record AddToCartRequest(Guid ProductId, int Quantity);
 
@@ -22,7 +21,7 @@ public class CartController : ControllerBase{
 
     [HttpPost("add")]
     public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request){
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(userIdString, out var userId))
             return Unauthorized();
         

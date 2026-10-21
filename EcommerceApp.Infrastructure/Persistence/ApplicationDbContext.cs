@@ -9,17 +9,17 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext{ //DbContex
     }
 
     public DbSet<Product> Products { get; set;} = null!; //Dbset<Product> 
-    public DbSet<User> Users => Set<User>();
+    public DbSet<User> Users { get; set; } = null!;
     public DbSet<Cart> Carts { get; set;} = null!;
 
-    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken){
-        return await base.SaveChangesAsync(cancellationToken);
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default){
+        return base.SaveChangesAsync(cancellationToken);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder){
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<Product>().Property(p => p.id).HasPrecision(18, 2);
-        modelBuilder.Entity<User>().Property(u => u.Email).IsUnique();
+        modelBuilder.Entity<Product>().Property(p => p.Price).HasPrecision(18, 2);
+        modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
     }
 
 }

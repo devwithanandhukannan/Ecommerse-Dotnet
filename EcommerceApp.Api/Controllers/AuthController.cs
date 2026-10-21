@@ -1,13 +1,15 @@
-using ECommerce.Application.Common.Interfaces;
-using ECommerce.Domain.Entities;
+using EcommerceApp.Application.Common.Interfaces;
+using EcommerceApp.Domain.Entites;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Api.Controllers;
+namespace EcommerceApp.Api.Controllers;
 
 public record LoginRequest(string Email, string Password);
 public record RegisterRequest(string Email, string Password, bool IsAdmin);
 
+[ApiController]
+[Route("api/[controller]")]
 public class AuthController : ControllerBase{
     private readonly IApplicationDbContext _dbContext;
     private readonly IJwtService _jwtService;
@@ -26,8 +28,8 @@ public class AuthController : ControllerBase{
         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
         var user = new User{
             Email = request.Email,
-            PasswordHash = hashedPassword,
-            IsAdmin = request.IsAdmin
+            Password = hashedPassword,
+            Role = request.IsAdmin ? UserRole.Admin : UserRole.Customer
         };
         _dbContext.Users.Add(user);
         await _dbContext.SaveChangesAsync(CancellationToken.None);
@@ -36,8 +38,8 @@ public class AuthController : ControllerBase{
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request){
-        var user = await _dbContext.Users.FirstorDefaultAsync(u => u.Email == request.Email);
-        if(user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash)){
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        if(user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password)){
             return Unauthorized("Invalid email or password.");
         }
         string token = _jwtService.GenerateToken(user);
